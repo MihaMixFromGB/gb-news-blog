@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import io from 'socket.io-client';
 
 import useAuth from '../../hooks/useAuth';
 import { CommentDto } from '@gb-news-blog/dto';
@@ -12,6 +13,8 @@ import {
 } from '../../api/comments';
 import { Comment } from '../comment/comment';
 
+const socket = io(process.env.NX_API_URL || '');
+
 export function CommentsList() {
   const [comments, setComments] = useState<CommentEntity[]>([]);
   const [editedComment, setEditedComment] = useState<CommentEntity | null>(
@@ -22,6 +25,19 @@ export function CommentsList() {
 
   const { newsId } = useParams();
   const { user } = useAuth();
+
+  useEffect(() => {
+    socket.emit('join', { newsId });
+
+    socket.on('createComment (server)', (data) => {
+      console.log('socket data', data);
+    });
+
+    return () => {
+      socket.off('createComment (server)');
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const id = parseInt(newsId || '');
@@ -44,10 +60,13 @@ export function CommentsList() {
         const newComments = [...comments];
         newComments.push(newComment);
         setComments(newComments);
+        setMessage('');
       })
       .catch((err) =>
         console.log('comments-list > handleCreated', err.message)
       );
+
+    socket.emit('createComment (client)', { data: commentDto });
   };
 
   const onEdit = (comment: CommentEntity) => {
