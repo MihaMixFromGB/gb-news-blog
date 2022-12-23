@@ -5,14 +5,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  OneToMany,
 } from 'typeorm';
 
 import { News } from '@gb-news-blog/interfaces';
 import { UserInfo } from '@gb-news-blog/interfaces';
 import { UserEntity } from './user.entity';
 import { CategoryEntity } from './category.entity';
-import { CommentEntity } from './comment.entity';
 
 @Entity('news')
 export class NewsEntity implements Omit<News, 'authorId' | 'categoryId'> {
@@ -33,9 +31,6 @@ export class NewsEntity implements Omit<News, 'authorId' | 'categoryId'> {
 
   @ManyToOne(() => UserEntity, (user) => user.id)
   author!: UserInfo;
-
-  @OneToMany(() => CommentEntity, (comment) => comment.id)
-  comments!: CommentEntity[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;

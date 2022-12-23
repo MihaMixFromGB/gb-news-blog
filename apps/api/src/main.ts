@@ -7,6 +7,7 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import { ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from './app/app.module';
 
@@ -18,6 +19,13 @@ async function bootstrap() {
 
   app.useStaticAssets(join(__dirname, 'assets'));
   console.log(__dirname);
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+    })
+  );
 
   const port = process.env.PORT || 3333;
   await app.listen(port);

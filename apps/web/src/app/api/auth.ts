@@ -13,39 +13,34 @@ const DEFAULT_USER: UserEntity = {
 };
 
 export async function getCurrentUser(): Promise<UserEntity | null> {
-  // const res = await fetch(API_URL);
+  // return fetch(API_URL).then(res => res.json());
 
-  // return res.json();
-  // return DEFAULT_USER;
-  return null;
+  return DEFAULT_USER;
+  // return null;
 }
 
 export async function signUp(params: CreateUserDto): Promise<UserEntity> {
-  const res = await fetch(API_URL, {
+  return fetch(API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(params),
-  });
-
-  return res.json();
+  }).then((res) => res.json());
 }
 
 export async function login(params: CreateUserDto): Promise<UserEntity> {
-  const res = await fetch(`${API_URL}/session`, {
+  return fetch(`${API_URL}/session`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(params),
-  });
-
-  return res.json();
+  }).then((res) => res.json());
 }
 
 export async function logout(): Promise<void> {
-  await fetch(`${API_URL}/session`, {
+  fetch(`${API_URL}/session`, {
     method: 'DELETE',
   });
 }

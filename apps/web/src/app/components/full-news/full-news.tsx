@@ -1,13 +1,29 @@
-import styles from './full-news.module.css';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-/* eslint-disable-next-line */
-export interface FullNewsProps {}
+import { NewsEntity } from '@gb-news-blog/entities';
+import { getNews } from '../../api/news';
 
-export function FullNews(props: FullNewsProps) {
+export function FullNews() {
+  const [news, setNews] = useState<NewsEntity | null>(null);
+  const { newsId } = useParams();
+
+  useEffect(() => {
+    const id = parseInt(newsId || '');
+    if (!id) {
+      return;
+    }
+
+    getNews(id).then((data) => setNews(data));
+  }, [newsId]);
+
   return (
-    <div className={styles['container']}>
-      <h1>Welcome to FullNews!</h1>
-    </div>
+    news && (
+      <div>
+        <h1>{news.title}</h1>
+        <p>{news.description}</p>
+      </div>
+    )
   );
 }
 

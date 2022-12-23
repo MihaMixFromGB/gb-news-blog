@@ -1,12 +1,11 @@
-import styles from './news-page.module.css';
+import { FullNews } from '../full-news/full-news';
+import { CommentsList } from '../comments-list/comments-list';
 
-/* eslint-disable-next-line */
-export interface NewsPageProps {}
-
-export function NewsPage(props: NewsPageProps) {
+export function NewsPage() {
   return (
-    <div className={styles['container']}>
-      <h1>Welcome to NewsPage!</h1>
+    <div>
+      <FullNews />
+      <CommentsList />
     </div>
   );
 }

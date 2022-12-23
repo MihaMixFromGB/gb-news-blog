@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate, Outlet, Routes, Route } from 'react-router-dom';
 
 import useAuth from './hooks/useAuth';
-import { Login, NewsList } from './components';
+import { Login, NewsList, NewsPage } from './components';
 
 export interface ProtectedRouteProps {
   isAllowed: boolean;
@@ -24,13 +24,17 @@ export function ProtectedRoute({
 
 export default function Router(): JSX.Element {
   const { user } = useAuth();
-  console.log('user', user);
+
   return (
     <Routes>
       {/* <Route index element={<Login />} /> */}
       <Route path="login" element={<Login />} />
       <Route element={<ProtectedRoute isAllowed={!!user} />}>
         <Route path="/" element={<NewsList />} />
+        <Route path="news">
+          <Route path="" element={<NewsList />} />
+          <Route path=":newsId" element={<NewsPage />} />
+        </Route>
       </Route>
     </Routes>
   );
