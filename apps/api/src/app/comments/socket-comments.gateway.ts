@@ -30,13 +30,20 @@ export interface EditCommentData {
 export class SocketCommentsGateway {
   @WebSocketServer() private server: Server;
 
-  @SubscribeMessage('join')
-  handleJoinClient(
+  @SubscribeMessage('joinRoom')
+  handleJoinRoomClient(
     @MessageBody() { newsId }: JoinData,
     @ConnectedSocket() client: Socket
   ) {
-    // console.log('join event', newsId);
     client.join(newsId);
+  }
+
+  @SubscribeMessage('leaveRoom')
+  handleLeaveRoomClient(
+    @MessageBody() { newsId }: JoinData,
+    @ConnectedSocket() client: Socket
+  ) {
+    client.leave(newsId);
   }
 
   @SubscribeMessage('createComment (client)')
@@ -45,7 +52,6 @@ export class SocketCommentsGateway {
     @ConnectedSocket() client: Socket
   ): void {
     const room = data.newsId.toString();
-    client.join(room);
-    this.server.to(room).emit('createComment (server)', data);
+    client.to(room).emit('createComment (server)', data);
   }
 }

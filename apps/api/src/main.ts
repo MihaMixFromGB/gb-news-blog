@@ -8,17 +8,21 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.enableCors();
+  app.enableCors({
+    origin: true,
+    credentials: true,
+  });
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
 
+  app.use(cookieParser());
   app.useStaticAssets(join(__dirname, 'assets'));
-  console.log(__dirname);
 
   app.useGlobalPipes(
     new ValidationPipe({

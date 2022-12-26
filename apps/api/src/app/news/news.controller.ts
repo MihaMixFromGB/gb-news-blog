@@ -8,6 +8,7 @@ import {
   Body,
   HttpException,
   HttpStatus,
+  UseGuards,
   // Req,
   // UploadedFile,
   // UseInterceptors,
@@ -25,11 +26,14 @@ import { NewsEntity } from '@gb-news-blog/entities';
 
 // import { MailService } from '../mail/mail.service';
 
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
 // const PATH_NEWS = '/images/';
 // const helperFileLoader = new HelperFileLoader();
 // helperFileLoader.path = PATH_NEWS;
 // const fileValidator = new FileTypeValidator();
 // @ApiTags('api/news')
+@UseGuards(JwtAuthGuard)
 @Controller('news')
 export class NewsController {
   constructor(private newsService: NewsService) {}

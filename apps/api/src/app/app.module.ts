@@ -15,6 +15,7 @@ import {
   CategoryEntity,
   CommentEntity,
 } from '@gb-news-blog/entities';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -30,12 +31,13 @@ import {
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [UserEntity, NewsEntity, CategoryEntity, CommentEntity],
-      synchronize: true,
+      synchronize: false,
     }),
     UsersModule,
     NewsModule,
     CategoriesModule,
     CommentsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

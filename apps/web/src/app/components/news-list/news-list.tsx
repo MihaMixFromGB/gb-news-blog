@@ -8,9 +8,7 @@ export function NewsList() {
   const [newsList, setNewsList] = useState<NewsEntity[]>([]);
 
   useEffect(() => {
-    getAllNews()
-      .then((data) => setNewsList(data))
-      .catch((err) => console.log('err from NewsList', err));
+    getAllNews().then((data) => setNewsList(data));
   }, []);
 
   return (

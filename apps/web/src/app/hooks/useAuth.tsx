@@ -16,7 +16,7 @@ export interface AuthContextType {
   loading: boolean;
   error?: string;
   login: (email: string, password: string) => void;
-  signUp: (email: string, password: string) => void;
+  signup: (email: string, password: string) => void;
   logout: () => void;
 }
 
@@ -43,7 +43,7 @@ export function AuthProvider({
     authApi
       .getCurrentUser()
       .then((newUser) => setUser(newUser))
-      .catch((_error) => setError(_error.message))
+      .catch((err) => setError(err.message))
       .finally(() => setLoadingInitial(false));
   }, []);
 
@@ -56,20 +56,20 @@ export function AuthProvider({
         setUser(newUser);
         navigate('/', { replace: true });
       })
-      .catch((newError) => setError(newError.message))
+      .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }
 
-  function signUp(email: string, password: string) {
+  function signup(email: string, password: string) {
     setLoading(true);
 
     authApi
-      .signUp({ email, password })
+      .signup({ email, password })
       .then((newUser) => {
         setUser(newUser);
         navigate('/', { replace: true });
       })
-      .catch((newError) => setError(newError.message))
+      .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }
 
@@ -84,7 +84,7 @@ export function AuthProvider({
       loading,
       error,
       login,
-      signUp,
+      signup,
       logout,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
