@@ -3,8 +3,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/main.ts"
+      "dest": "/apps/api/src/main.ts"
     }
-  ],
-  "outputDirectory": "../../dist/apps/api/"
+  ]
 }
