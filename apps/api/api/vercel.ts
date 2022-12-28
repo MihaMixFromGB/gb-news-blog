@@ -10,7 +10,7 @@ import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 
-import { AppModule } from './app/app.module';
+import { AppModule } from '../src/app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
