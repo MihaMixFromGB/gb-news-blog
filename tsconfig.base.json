@@ -16,8 +16,19 @@
     "baseUrl": ".",
     "paths": {
       "@gb-news-blog/dto": ["libs/dto/src/index.ts"],
+      "@gb-news-blog/emitter-events-types": [
+        "libs/emitter-events-types/src/index.ts"
+      ],
       "@gb-news-blog/entities": ["libs/entities/src/index.ts"],
-      "@gb-news-blog/interfaces": ["libs/interfaces/src/index.ts"]
+      "@gb-news-blog/event-emitter-types": [
+        "libs/event-emitter-types/src/index.ts"
+      ],
+      "@gb-news-blog/events-dto": ["libs/events-dto/src/index.ts"],
+      "@gb-news-blog/events-types": ["libs/events-types/src/index.ts"],
+      "@gb-news-blog/interfaces": ["libs/interfaces/src/index.ts"],
+      "@gb-news-blog/socket-events-types": [
+        "libs/socket-events-types/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -5,9 +5,11 @@ import {
   ConnectedSocket,
   MessageBody,
 } from '@nestjs/websockets';
+import { OnEvent } from '@nestjs/event-emitter';
 import { Socket, Server } from 'socket.io';
 
 import { CommentDto } from '@gb-news-blog/dto';
+import { EmitterEvent } from '@gb-news-blog/emitter-events-types';
 
 export interface JoinData {
   newsId: string;
@@ -30,7 +32,7 @@ export interface EditCommentData {
 export class SocketCommentsGateway {
   @WebSocketServer() private server: Server;
 
-  @SubscribeMessage('joinRoom')
+  @SubscribeMessage('room-join')
   handleJoinRoomClient(
     @MessageBody() { newsId }: JoinData,
     @ConnectedSocket() client: Socket
@@ -38,7 +40,7 @@ export class SocketCommentsGateway {
     client.join(newsId);
   }
 
-  @SubscribeMessage('leaveRoom')
+  @SubscribeMessage('room-leave')
   handleLeaveRoomClient(
     @MessageBody() { newsId }: JoinData,
     @ConnectedSocket() client: Socket
@@ -46,12 +48,18 @@ export class SocketCommentsGateway {
     client.leave(newsId);
   }
 
-  @SubscribeMessage('createComment (client)')
-  handleCreateComment(
-    @MessageBody() { data }: CreateCommentData,
-    @ConnectedSocket() client: Socket
-  ): void {
-    const room = data.newsId.toString();
-    client.to(room).emit('createComment (server)', data);
+  // @SubscribeMessage('comment-create')
+  // handleCreateComment(
+  //   @MessageBody() { data }: CreateCommentData,
+  //   @ConnectedSocket() client: Socket
+  // ): void {
+  //   const room = data.newsId.toString();
+  // //  broadcast to a room from a given socket (client) excluding the sender
+  //   client.to(room).emit('comment-create', data);
+  // }
+
+  @OnEvent('comment.*')
+  handleCommentEvents({ type, roomId, payload }: EmitterEvent) {
+    this.server.to(roomId).emit(type, payload);
   }
 }

@@ -43,7 +43,7 @@ export async function editComment(
     body: JSON.stringify(commentDto),
   }).then((res) => {
     if (res.ok) {
-      res.json();
+      return res.json();
     }
     return null;
   });

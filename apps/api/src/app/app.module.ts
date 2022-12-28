@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -32,6 +33,9 @@ import { AuthModule } from './auth/auth.module';
       database: process.env.DB_NAME,
       entities: [UserEntity, NewsEntity, CategoryEntity, CommentEntity],
       synchronize: false,
+    }),
+    EventEmitterModule.forRoot({
+      wildcard: true,
     }),
     UsersModule,
     NewsModule,

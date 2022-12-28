@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import useAuth from '../../hooks/useAuth';
-import useSocket from '../../hooks/useSocket';
 import { CommentDto } from '@gb-news-blog/dto';
 import { CommentEntity } from '@gb-news-blog/entities';
+import { SocketEventPayload } from '@gb-news-blog/socket-events-types';
+
+import useAuth from '../../hooks/useAuth';
+import useSocket from '../../hooks/useSocket';
 import {
   getCommentsForNews,
   createComment,
@@ -12,6 +14,10 @@ import {
   deleteComment,
 } from '../../api/comments';
 import { Comment } from '../comment/comment';
+
+function cbTestSocket(data: SocketEventPayload) {
+  console.log('socket data', data);
+}
 
 export function CommentsList() {
   const [comments, setComments] = useState<CommentEntity[]>([]);
@@ -35,15 +41,17 @@ export function CommentsList() {
   }, [newsId]);
 
   useEffect(() => {
-    socket.emit('joinRoom', { newsId });
+    socket.emit('room-join', { newsId });
 
-    socket.on('createComment (server)', (data) => {
-      console.log('socket data', data);
-    });
+    socket.on('comment-create', cbTestSocket);
+    socket.on('comment-edited', cbTestSocket);
+    socket.on('comment-deleted', cbTestSocket);
 
     return () => {
-      socket.off('createComment (server)');
-      socket.emit('leaveRoom', { newsId });
+      socket.off('comment-create');
+      socket.off('comment-edited');
+      socket.off('comment-deleted');
+      socket.emit('room-leave', { newsId });
     };
   }, [newsId, socket]);
 
@@ -69,7 +77,7 @@ export function CommentsList() {
         console.log('comments-list > handleCreated', err.message)
       );
 
-    socket.emit('createComment (client)', { data: commentDto });
+    // socket.emit('comment-create', { data: commentDto });
   };
 
   const onEdit = (comment: CommentEntity) => {
@@ -113,7 +121,7 @@ export function CommentsList() {
           setIsCreate(true);
         }
       })
-      .catch((err) => console.log('comments-list > handleEdited', err.message));
+      .catch((err) => console.log('comments-list > handleEdited', err));
   };
 
   const onDelete = async (id: number) => {
