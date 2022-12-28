@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TreeRepository } from 'typeorm';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 import { CommentDto } from '@gb-news-blog/dto';
 import { CommentEntity } from '@gb-news-blog/entities';
@@ -9,12 +10,15 @@ import { UsersService } from '../users/users.service';
 import { User } from '@gb-news-blog/interfaces';
 import { convertToUserInfo } from '../utils/convertToUserInfo';
 
+import { EmitterEventDto } from '@gb-news-blog/emitter-events-types';
+
 @Injectable()
 export class CommentsService {
   constructor(
     @InjectRepository(CommentEntity)
     private commentsRepository: TreeRepository<CommentEntity>,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private eventEmitter: EventEmitter2
   ) {}
 
   async findAllByNews(newsId: number): Promise<CommentEntity[]> {
@@ -69,6 +73,15 @@ export class CommentsService {
     newComment = await this.commentsRepository.save(newComment);
     newComment.user = convertToUserInfo(newComment.user as User);
 
+    this.eventEmitter.emit(
+      'comment.create',
+      new EmitterEventDto('comment-create', newComment.newsId.toString(), {
+        entityId: newComment.id,
+        userId: newComment.user.id,
+        message: `${newComment.user.email} has created a new message`,
+      })
+    );
+
     return newComment;
   }
 
@@ -95,6 +108,15 @@ export class CommentsService {
     updatedComment = await this.commentsRepository.save(updatedComment);
     updatedComment.user = convertToUserInfo(updatedComment.user as User);
 
+    this.eventEmitter.emit(
+      'comment.edited',
+      new EmitterEventDto('comment-edited', updatedComment.newsId.toString(), {
+        entityId: updatedComment.id,
+        userId: updatedComment.user.id,
+        message: `${updatedComment.user.email} has edited a message`,
+      })
+    );
+
     return updatedComment;
   }
 
@@ -106,6 +128,15 @@ export class CommentsService {
 
     deletedComment = await this.commentsRepository.remove(deletedComment);
     deletedComment.user = convertToUserInfo(deletedComment.user as User);
+
+    this.eventEmitter.emit(
+      'comment.deleted',
+      new EmitterEventDto('comment-deleted', deletedComment.newsId.toString(), {
+        entityId: deletedComment.id,
+        userId: deletedComment.user.id,
+        message: `${deletedComment.user.email} has deleted a message`,
+      })
+    );
 
     return deletedComment;
   }

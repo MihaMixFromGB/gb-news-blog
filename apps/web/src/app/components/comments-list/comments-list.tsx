@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import useAuth from '../../hooks/useAuth';
 import { CommentDto } from '@gb-news-blog/dto';
 import { CommentEntity } from '@gb-news-blog/entities';
+import { SocketEventPayload } from '@gb-news-blog/socket-events-types';
+
+import useAuth from '../../hooks/useAuth';
+import useSocket from '../../hooks/useSocket';
 import {
   getCommentsForNews,
   createComment,
@@ -11,6 +14,10 @@ import {
   deleteComment,
 } from '../../api/comments';
 import { Comment } from '../comment/comment';
+
+function cbTestSocket(data: SocketEventPayload) {
+  console.log('socket data', data);
+}
 
 export function CommentsList() {
   const [comments, setComments] = useState<CommentEntity[]>([]);
@@ -22,6 +29,7 @@ export function CommentsList() {
 
   const { newsId } = useParams();
   const { user } = useAuth();
+  const socket = useSocket();
 
   useEffect(() => {
     const id = parseInt(newsId || '');
@@ -32,6 +40,21 @@ export function CommentsList() {
     getCommentsForNews(id).then((data) => setComments(data));
   }, [newsId]);
 
+  useEffect(() => {
+    socket.emit('room-join', { newsId });
+
+    socket.on('comment-create', cbTestSocket);
+    socket.on('comment-edited', cbTestSocket);
+    socket.on('comment-deleted', cbTestSocket);
+
+    return () => {
+      socket.off('comment-create');
+      socket.off('comment-edited');
+      socket.off('comment-deleted');
+      socket.emit('room-leave', { newsId });
+    };
+  }, [newsId, socket]);
+
   const handleCreateBtn = async () => {
     const commentDto: CommentDto = {
       newsId: parseInt(newsId || ''),
@@ -41,13 +64,20 @@ export function CommentsList() {
 
     await createComment(commentDto)
       .then((newComment) => {
+        if (!newComment) {
+          return Promise.reject('A comment has not been created!');
+        }
+
         const newComments = [...comments];
         newComments.push(newComment);
         setComments(newComments);
+        setMessage('');
       })
       .catch((err) =>
         console.log('comments-list > handleCreated', err.message)
       );
+
+    // socket.emit('comment-create', { data: commentDto });
   };
 
   const onEdit = (comment: CommentEntity) => {
@@ -73,6 +103,12 @@ export function CommentsList() {
 
     await editComment(editedComment.id, commentDto)
       .then((eComment) => {
+        if (!eComment) {
+          return Promise.reject(
+            `A comment (id=${editedComment.id}) has not been edited!`
+          );
+        }
+
         const updatedComments = [...comments];
         const idx = updatedComments.findIndex(
           (item) => item.id === eComment.id
@@ -85,12 +121,15 @@ export function CommentsList() {
           setIsCreate(true);
         }
       })
-      .catch((err) => console.log('comments-list > handleEdited', err.message));
+      .catch((err) => console.log('comments-list > handleEdited', err));
   };
 
   const onDelete = async (id: number) => {
     await deleteComment(id)
       .then((dComment) => {
+        if (!dComment) {
+          return Promise.reject(`A comment (id=${id}) has not been deleted!`);
+        }
         setComments(comments.filter((item) => item.id !== id));
       })
       .catch((err) => console.log('comments-list > OnDelete', err.message));
