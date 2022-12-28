@@ -18,8 +18,7 @@ async function bootstrap() {
     origin: true,
     credentials: true,
   });
-  // const globalPrefix = 'api';
-  const globalPrefix = '';
+  const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
 
   app.use(cookieParser());
