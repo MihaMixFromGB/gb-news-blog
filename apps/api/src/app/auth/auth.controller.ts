@@ -34,7 +34,7 @@ export class AuthController {
       'Set-Cookie',
       `token=${access_token}; Max-Age=${parseInt(
         process.env.JWT_EXPIRESIN_SEC
-      )}; Path=/`
+      )}; Path=/; SameSite=None; Secure`
     );
 
     return req.user;
