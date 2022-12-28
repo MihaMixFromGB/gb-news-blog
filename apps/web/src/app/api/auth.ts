@@ -13,7 +13,13 @@ const API_URL = `${process.env.NX_API_URL}/api/auth`;
 // };
 
 export async function getCurrentUser(): Promise<UserEntity | null> {
-  return fetch(`${API_URL}/session`, { credentials: 'include' }).then((res) => {
+  return fetch(`${API_URL}/session`, {
+    mode: 'cors',
+    // headers: {
+    //   'Access-Control-Allow-Origin': 'http://localhost:3002',
+    // },
+    credentials: 'include',
+  }).then((res) => {
     if (res.ok) {
       return res.json();
     }
@@ -43,8 +49,10 @@ export async function login(params: CreateUserDto): Promise<UserEntity | null> {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      // 'Access-Control-Allow-Origin': 'http://localhost:3002',
     },
     body: JSON.stringify(params),
+    mode: 'cors',
     credentials: 'include',
   }).then((res) => {
     if (res.ok) {
