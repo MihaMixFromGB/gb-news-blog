@@ -11,7 +11,6 @@ import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from '../src/app/app.module';
-import { UserEntity } from '../../../libs/entities/src';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);

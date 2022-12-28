@@ -9,5 +9,10 @@
     {
       "path": "./tsconfig.spec.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "paths": {
+      "@gb-news-blog/entities": ["../../libs/entities/src/index.ts"]
+    }
+  }
 }
