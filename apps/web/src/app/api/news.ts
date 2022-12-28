@@ -4,7 +4,6 @@ const API_URL = `${process.env.NX_API_URL}/api/news`;
 
 export async function getAllNews(): Promise<NewsEntity[]> {
   return fetch(API_URL, { credentials: 'include' }).then((res) => {
-    // return fetch(API_URL).then((res) => {
     if (res.ok) {
       return res.json();
     }
@@ -14,7 +13,6 @@ export async function getAllNews(): Promise<NewsEntity[]> {
 
 export async function getNews(id: number): Promise<NewsEntity | null> {
   return fetch(`${API_URL}/${id}`, { credentials: 'include' }).then((res) => {
-    // return fetch(`${API_URL}/${id}`).then((res) => {
     if (res.ok) {
       res.json();
     }
