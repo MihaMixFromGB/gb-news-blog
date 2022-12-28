@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "buildCommand:": "nx build",
   "outputDirectory": "../../dist/apps/api/",
   "builds": [
     {
