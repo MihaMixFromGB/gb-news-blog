@@ -3,12 +3,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "api/main.js"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
+      "dest": "api/main.js",
       "headers": [
         { "key": "Access-Control-Allow-Credentials", "value": "true" },
         { "key": "Access-Control-Allow-Origin", "value": "*" },
