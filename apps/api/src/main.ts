@@ -7,7 +7,7 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
-import { existsSync } from 'fs';
+// import { existsSync } from 'fs';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 
@@ -25,11 +25,10 @@ async function bootstrap() {
   app.use(cookieParser());
 
   // Only for serverless function on Vercel Hosting
-  console.log('!!path', join(__dirname, '..', 'src', 'assets'));
-  let pathToAssets = join(__dirname, 'assets');
-  if (!existsSync(pathToAssets)) {
-    pathToAssets = join(__dirname, '..', 'src', 'assets');
-  }
+  const pathToAssets = join(__dirname, 'assets');
+  // if (!existsSync(pathToAssets)) {
+  //   pathToAssets = join(__dirname, '..', 'src', 'assets');
+  // }
   app.useStaticAssets(pathToAssets);
 
   app.useGlobalPipes(
