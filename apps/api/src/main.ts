@@ -7,7 +7,6 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
-import { existsSync } from 'fs';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 
@@ -15,29 +14,17 @@ import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  // app.enableCors({
-  //   origin: true,
-  //   credentials: true,
-  // });
+  app.enableCors({
+    origin: true,
+    credentials: true,
+  });
 
-  const pathToAssets = join(__dirname, 'assets/images/');
-  // Only for serverless function on Vercel Hosting
-  // if (!existsSync(pathToAssets)) {
-  //   pathToAssets = join(
-  //     __dirname,
-  //     // 'C:/Users/decht/source/gb-news-blog/apps/api/src',
-  //     '..',
-  //     '..',
-  //     '..',
-  //     'dist/apps/api/assets/images/'
-  //   );
-  // }
-  app.useStaticAssets(pathToAssets, { prefix: '/images' });
+  app.useStaticAssets(join(__dirname, 'assets'));
 
   const globalPrefix = 'api';
-  // app.setGlobalPrefix(globalPrefix);
+  app.setGlobalPrefix(globalPrefix);
 
-  // app.use(cookieParser());
+  app.use(cookieParser());
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -51,9 +38,6 @@ async function bootstrap() {
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
   );
-
-  return app;
 }
 
-// bootstrap();
-module.exports = bootstrap();
+bootstrap();
