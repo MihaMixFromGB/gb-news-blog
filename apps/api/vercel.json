@@ -2,10 +2,6 @@
   "version": 2,
   "routes": [
     {
-      "src": "/images/(.+)",
-      "dest": "src/assets/images/$1"
-    },
-    {
       "src": "/(.*)",
       "dest": "api/main.js"
     }
