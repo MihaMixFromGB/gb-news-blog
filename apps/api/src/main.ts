@@ -25,11 +25,17 @@ async function bootstrap() {
   app.use(cookieParser());
 
   // Only for serverless function on Vercel Hosting
-  const pathToAssets = join(__dirname, 'assets');
+  // const pathToAssets = join(__dirname, 'assets');
   // if (!existsSync(pathToAssets)) {
-  //   pathToAssets = join(__dirname, '..', '..', '..', 'dist/apps/api', 'assets');
+  const pathToAssets = join(
+    __dirname,
+    '..',
+    '..',
+    '..',
+    'dist/apps/api/assets'
+  );
   // }
-  app.useStaticAssets(pathToAssets, { prefix: '/' });
+  app.useStaticAssets(pathToAssets);
 
   app.useGlobalPipes(
     new ValidationPipe({
