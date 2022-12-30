@@ -25,6 +25,7 @@ async function bootstrap() {
   app.use(cookieParser());
 
   // Only for serverless function on Vercel Hosting
+  console.log('!!path', join(__dirname, '..', 'src', 'assets'));
   let pathToAssets = join(__dirname, 'assets');
   if (!existsSync(pathToAssets)) {
     pathToAssets = join(__dirname, '..', 'src', 'assets');
