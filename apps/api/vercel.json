@@ -1,9 +1,19 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "src/assets/**",
+      "use": "@vercel/static"
+    }
+  ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/api/(.*)",
       "dest": "api/main.js"
+    },
+    {
+      "src": "/images/(.+)",
+      "desc": "src/assets/images/$1"
     }
   ]
 }
