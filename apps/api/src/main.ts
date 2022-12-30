@@ -20,18 +20,18 @@ async function bootstrap() {
   //   credentials: true,
   // });
 
-  let pathToAssets = join(__dirname, 'assets');
+  const pathToAssets = join(__dirname, 'assets/images/');
   // Only for serverless function on Vercel Hosting
-  if (!existsSync(pathToAssets)) {
-    pathToAssets = join(
-      __dirname,
-      // 'C:/Users/decht/source/gb-news-blog/apps/api/src',
-      '..',
-      '..',
-      '..',
-      'dist/apps/api/assets/images/'
-    );
-  }
+  // if (!existsSync(pathToAssets)) {
+  //   pathToAssets = join(
+  //     __dirname,
+  //     // 'C:/Users/decht/source/gb-news-blog/apps/api/src',
+  //     '..',
+  //     '..',
+  //     '..',
+  //     'dist/apps/api/assets/images/'
+  //   );
+  // }
   app.useStaticAssets(pathToAssets, { prefix: '/images' });
 
   const globalPrefix = 'api';
