@@ -55,4 +55,5 @@ async function bootstrap() {
   return app;
 }
 
-bootstrap();
+// bootstrap();
+module.exports = bootstrap();
