@@ -1,8 +1,8 @@
 import React from 'react';
 import { Navigate, Outlet, Routes, Route } from 'react-router-dom';
 
-import useAuth from './hooks/useAuth';
-import { Login, NewsList, NewsPage } from './components';
+import useAuth from '../hooks/useAuth';
+import { Login, NewsList, NewsDetails } from '../feature';
 
 export interface ProtectedRouteProps {
   isAllowed: boolean;
@@ -33,7 +33,7 @@ export default function Router(): JSX.Element {
         <Route path="/" element={<NewsList />} />
         <Route path="news">
           <Route path="" element={<NewsList />} />
-          <Route path=":newsId" element={<NewsPage />} />
+          <Route path=":newsId" element={<NewsDetails />} />
         </Route>
       </Route>
     </Routes>
