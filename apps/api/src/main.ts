@@ -26,9 +26,8 @@ async function bootstrap() {
 
   // Only for serverless function on Vercel Hosting
   let pathToAssets = join(__dirname, 'assets');
-  console.log('existsSync(pathToAssets)', existsSync(pathToAssets));
   if (!existsSync(pathToAssets)) {
-    pathToAssets = join(__dirname, '..', 'assets');
+    pathToAssets = join(__dirname, '..', 'src', 'assets');
   }
   app.useStaticAssets(pathToAssets);
 
