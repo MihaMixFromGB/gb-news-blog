@@ -15,10 +15,10 @@ import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.enableCors({
-    origin: true,
-    credentials: true,
-  });
+  // app.enableCors({
+  //   origin: true,
+  //   credentials: true,
+  // });
 
   let pathToAssets = join(__dirname, 'assets');
   // Only for serverless function on Vercel Hosting
@@ -35,9 +35,9 @@ async function bootstrap() {
   app.useStaticAssets(pathToAssets, { prefix: '/images' });
 
   const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
+  // app.setGlobalPrefix(globalPrefix);
 
-  app.use(cookieParser());
+  // app.use(cookieParser());
 
   app.useGlobalPipes(
     new ValidationPipe({
