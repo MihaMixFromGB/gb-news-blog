@@ -33,11 +33,10 @@ async function bootstrap() {
       '..',
       '..',
       '..',
-      'dist/apps/api/assets/'
+      'dist/apps/api/assets/images/'
     );
   }
-  console.log('!!!pathToAssets', pathToAssets);
-  app.useStaticAssets(pathToAssets);
+  app.useStaticAssets(pathToAssets, { prefix: '/images' });
 
   app.useGlobalPipes(
     new ValidationPipe({
