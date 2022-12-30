@@ -19,10 +19,6 @@ async function bootstrap() {
     origin: true,
     credentials: true,
   });
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-
-  app.use(cookieParser());
 
   let pathToAssets = join(__dirname, 'assets');
   // Only for serverless function on Vercel Hosting
@@ -37,6 +33,11 @@ async function bootstrap() {
     );
   }
   app.useStaticAssets(pathToAssets, { prefix: '/images' });
+
+  const globalPrefix = 'api';
+  app.setGlobalPrefix(globalPrefix);
+
+  app.use(cookieParser());
 
   app.useGlobalPipes(
     new ValidationPipe({
