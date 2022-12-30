@@ -13,7 +13,7 @@
     },
     {
       "src": "/images/(.+)",
-      "desc": "src/assets/images/$1"
+      "dest": "src/assets/images/$1"
     }
   ]
 }
