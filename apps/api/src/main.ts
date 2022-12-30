@@ -29,13 +29,14 @@ async function bootstrap() {
   // if (!existsSync(pathToAssets)) {
   const pathToAssets = join(
     __dirname,
+    // 'C:/Users/decht/source/gb-news-blog/apps/api/src',
     '..',
     '..',
     '..',
-    'dist/apps/api/assets'
+    'dist/apps/api/assets/images'
   );
   // }
-  app.useStaticAssets(pathToAssets);
+  app.useStaticAssets(pathToAssets, { prefix: '/images' });
 
   app.useGlobalPipes(
     new ValidationPipe({
