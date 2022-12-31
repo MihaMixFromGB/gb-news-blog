@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 
 // import { existsSync } from 'fs';
+import { readdirSync } from 'fs';
 import { join } from 'path';
 
 import { AppService } from './app.service';
@@ -23,6 +24,11 @@ export class AppController {
     // log +=
     //   'batman.jpg: ' +
     //   existsSync(join(__dirname, '..', 'assets/images/batman.jpg'));
+
+    const testFolder = join(__dirname, '..');
+    readdirSync(testFolder).forEach((file) => {
+      log += file + ' --- ';
+    });
 
     return log;
   }
