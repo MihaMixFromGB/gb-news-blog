@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 
-// import { existsSync } from 'fs';
-// import { join } from 'path';
+import { existsSync } from 'fs';
+import { join } from 'path';
 
 import { AppService } from './app.service';
 
@@ -17,8 +17,11 @@ export class AppController {
   @Get('console')
   getLog() {
     let log = '';
-    log += '__dirname: ' + __dirname + ' /n';
-    // log += '__dirname: ' + join(__dirname, '..');
+    log += '__dirname: ' + __dirname + ' --- ';
+    log += 'assets: ' + existsSync(join(__dirname, '..', 'assets')) + ' --- ';
+    log +=
+      'batman.jpg: ' +
+      existsSync(join(__dirname, '..', 'assets/images/batman.jpg'));
 
     return log;
   }
