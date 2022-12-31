@@ -19,7 +19,7 @@ export class AppController {
   getLog() {
     let log = '';
     log += '__dirname: ' + __dirname + ' --- ';
-    log += 'assets: ' + join(__dirname, '..', 'assets');
+    // log += 'assets: ' + join(__dirname, '..', 'assets');
     // log += 'assets: ' + existsSync(join(__dirname, '..', 'assets')) + ' --- ';
     // log +=
     //   'batman.jpg: ' +
