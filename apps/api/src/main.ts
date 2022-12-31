@@ -7,6 +7,7 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import { existsSync } from 'fs';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 
@@ -19,7 +20,12 @@ async function bootstrap() {
     credentials: true,
   });
 
-  app.useStaticAssets(join(__dirname, 'assets'));
+  let pathToAssets = join(__dirname, 'assets');
+  // For Serverless function on Vercel hosting (/api/main.js)'
+  if (!existsSync(pathToAssets)) {
+    pathToAssets = join(__dirname, '..', 'assets');
+  }
+  app.useStaticAssets(pathToAssets);
 
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
