@@ -14,11 +14,7 @@ export function TimeAgo({ timestamp }: TimeAgoProps) {
     timeAgo = `${timePeriod} ago`;
   }
 
-  return (
-    <span title={timestamp}>
-      &nbsp; <i>{timeAgo}</i>
-    </span>
-  );
+  return <span title={timestamp}>&nbsp;{timeAgo}</span>;
 }
 
 export default TimeAgo;

@@ -14,7 +14,7 @@ export async function getAllNews(): Promise<NewsEntity[]> {
 export async function getNews(id: number): Promise<NewsEntity | null> {
   return fetch(`${API_URL}/${id}`, { credentials: 'include' }).then((res) => {
     if (res.ok) {
-      res.json();
+      return res.json();
     }
     return null;
   });

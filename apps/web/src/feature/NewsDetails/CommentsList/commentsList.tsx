@@ -136,8 +136,24 @@ export function CommentsList() {
   };
 
   return (
-    <div>
-      <h1>Welcome to CommentsList!</h1>
+    <section className="sm:w-1/2 w-full mx-auto py-5">
+      <div className="max-w-2xl px-4">
+        <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200">
+          <textarea
+            className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none"
+            placeholder="Write a comment..."
+            value={message}
+            onChange={(event) => setMessage(event.target.value)}
+            required
+          ></textarea>
+        </div>
+        <button
+          className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 hover:bg-indigo-800"
+          onClick={isCreate ? handleCreateBtn : handleEditeBtn}
+        >
+          {isCreate ? 'Post' : 'Edit'} comment
+        </button>
+      </div>
       <ul>
         {comments.map((item) => (
           <li key={item.id}>
@@ -145,16 +161,7 @@ export function CommentsList() {
           </li>
         ))}
       </ul>
-      <div>
-        <textarea
-          value={message}
-          onChange={(event) => setMessage(event.target.value)}
-        />
-        <button onClick={isCreate ? handleCreateBtn : handleEditeBtn}>
-          {isCreate ? 'CREATE' : 'EDIT'}
-        </button>
-      </div>
-    </div>
+    </section>
   );
 }
 

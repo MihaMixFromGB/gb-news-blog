@@ -59,7 +59,7 @@ export async function login(params: CreateUserDto): Promise<UserEntity | null> {
 }
 
 export async function logout(): Promise<void> {
-  fetch(`${API_URL}/session`, {
-    method: 'DELETE',
-  });
+  // fetch(`${API_URL}/session`, {
+  //   method: 'DELETE',
+  // });
 }

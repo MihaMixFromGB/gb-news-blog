@@ -3,7 +3,7 @@ import { CommentsList } from './CommentsList';
 
 export function NewsDetails() {
   return (
-    <div>
+    <div className="container mx-auto my-5">
       <FullNews />
       <CommentsList />
     </div>

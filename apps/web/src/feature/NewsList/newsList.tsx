@@ -12,11 +12,11 @@ export function NewsList() {
   }, []);
 
   return (
-    <div>
+    <div className="container mx-auto my-5">
       {newsList.length !== 0 && (
-        <ul>
+        <ul className="flex flex-row justify-center gap-5 flex-wrap">
           {newsList.map((item) => (
-            <li key={item.id}>
+            <li className="md:w-5/12" key={item.id}>
               <ShortNews news={item} />
               <hr />
             </li>
