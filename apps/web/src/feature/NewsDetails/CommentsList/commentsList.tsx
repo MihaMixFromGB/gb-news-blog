@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom';
 
 import { CommentDto } from '@gb-news-blog/dto';
 import { CommentEntity } from '@gb-news-blog/entities';
-// import { SocketEventPayload } from '@gb-news-blog/socket-events-types';
+import { SocketEventPayload } from '@gb-news-blog/socket-events-types';
 
 import useAuth from '../../../hooks/useAuth';
-// import useSocket from '../../hooks/useSocket';
+import useSocket from '../../../hooks/useSocket';
 import {
   getCommentsForNews,
   createComment,
@@ -15,9 +15,9 @@ import {
 } from '../../../services/Api/comments';
 import { Comment } from './Comment';
 
-// function cbTestSocket(data: SocketEventPayload) {
-//   console.log('socket data', data);
-// }
+function cbTestSocket(data: SocketEventPayload) {
+  console.log('socket data', data);
+}
 
 export function CommentsList() {
   const [comments, setComments] = useState<CommentEntity[]>([]);
@@ -29,7 +29,7 @@ export function CommentsList() {
 
   const { newsId } = useParams();
   const { user } = useAuth();
-  // const socket = useSocket();
+  const socket = useSocket();
 
   useEffect(() => {
     const id = parseInt(newsId || '');
@@ -40,20 +40,20 @@ export function CommentsList() {
     getCommentsForNews(id).then((data) => setComments(data));
   }, [newsId]);
 
-  // useEffect(() => {
-  //   socket.emit('room-join', { newsId });
+  useEffect(() => {
+    socket.emit('room-join', { newsId });
 
-  //   socket.on('comment-create', cbTestSocket);
-  //   socket.on('comment-edited', cbTestSocket);
-  //   socket.on('comment-deleted', cbTestSocket);
+    socket.on('comment-create', cbTestSocket);
+    socket.on('comment-edited', cbTestSocket);
+    socket.on('comment-deleted', cbTestSocket);
 
-  //   return () => {
-  //     socket.off('comment-create');
-  //     socket.off('comment-edited');
-  //     socket.off('comment-deleted');
-  //     socket.emit('room-leave', { newsId });
-  //   };
-  // }, [newsId, socket]);
+    return () => {
+      socket.off('comment-create');
+      socket.off('comment-edited');
+      socket.off('comment-deleted');
+      socket.emit('room-leave', { newsId });
+    };
+  }, [newsId, socket]);
 
   const handleCreateBtn = async () => {
     const commentDto: CommentDto = {
@@ -76,8 +76,6 @@ export function CommentsList() {
       .catch((err) =>
         console.log('comments-list > handleCreated', err.message)
       );
-
-    // socket.emit('comment-create', { data: commentDto });
   };
 
   const onEdit = (comment: CommentEntity) => {

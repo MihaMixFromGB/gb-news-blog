@@ -1,15 +1,15 @@
 import { AuthProvider } from '../hooks/useAuth';
-// import { SocketProvider } from './hooks/useSocket';
+import { SocketProvider } from '../hooks/useSocket';
 import { Header } from '../components/Header';
 import CustomRoutes from './router';
 
 export function App() {
   return (
     <AuthProvider>
-      {/* <SocketProvider> */}
-      <Header />
-      <CustomRoutes />
-      {/* </SocketProvider> */}
+      <SocketProvider>
+        <Header />
+        <CustomRoutes />
+      </SocketProvider>
     </AuthProvider>
   );
 }
