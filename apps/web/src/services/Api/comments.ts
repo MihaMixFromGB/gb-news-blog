@@ -6,12 +6,14 @@ const API_URL = `${process.env.NX_API_URL}/api/comments`;
 export async function getCommentsForNews(
   newsId: number
 ): Promise<CommentEntity[]> {
-  return fetch(`${API_URL}?newsId=${newsId}`).then((res) => {
-    if (res.ok) {
-      return res.json();
+  return fetch(`${API_URL}?newsId=${newsId}`, { credentials: 'include' }).then(
+    (res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return [];
     }
-    return [];
-  });
+  );
 }
 
 export async function createComment(
@@ -23,6 +25,7 @@ export async function createComment(
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(commentDto),
+    credentials: 'include',
   }).then((res) => {
     if (res.ok) {
       return res.json();
@@ -41,6 +44,7 @@ export async function editComment(
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(commentDto),
+    credentials: 'include',
   }).then((res) => {
     if (res.ok) {
       return res.json();

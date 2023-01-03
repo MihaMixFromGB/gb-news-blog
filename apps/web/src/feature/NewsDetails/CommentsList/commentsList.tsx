@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { CommentDto } from '@gb-news-blog/dto';
@@ -14,10 +14,11 @@ import {
   deleteComment,
 } from '../../../services/Api/comments';
 import { Comment } from './Comment';
+import { SocketAlert } from '../../../components/SocketAlert';
 
-function cbTestSocket(data: SocketEventPayload) {
-  console.log('socket data', data);
-}
+// function cbTestSocket(data: SocketEventPayload) {
+//   console.log('socket data', data);
+// }
 
 export function CommentsList() {
   const [comments, setComments] = useState<CommentEntity[]>([]);
@@ -26,10 +27,18 @@ export function CommentsList() {
   );
   const [message, setMessage] = useState('');
   const [isCreate, setIsCreate] = useState(true);
+  const [socketMessage, setSocketMessage] = useState('');
+  const [socketReceivedAt, setSocketReceivedAt] = useState(new Date());
 
   const { newsId } = useParams();
   const { user } = useAuth();
   const socket = useSocket();
+
+  const handleSocketAlert = useCallback((data: SocketEventPayload) => {
+    setSocketMessage(data.message);
+    setSocketReceivedAt(new Date());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const id = parseInt(newsId || '');
@@ -43,9 +52,9 @@ export function CommentsList() {
   useEffect(() => {
     socket.emit('room-join', { newsId });
 
-    socket.on('comment-create', cbTestSocket);
-    socket.on('comment-edited', cbTestSocket);
-    socket.on('comment-deleted', cbTestSocket);
+    socket.on('comment-create', handleSocketAlert);
+    socket.on('comment-edited', handleSocketAlert);
+    socket.on('comment-deleted', handleSocketAlert);
 
     return () => {
       socket.off('comment-create');
@@ -53,6 +62,7 @@ export function CommentsList() {
       socket.off('comment-deleted');
       socket.emit('room-leave', { newsId });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newsId, socket]);
 
   const handleCreateBtn = async () => {
@@ -82,6 +92,7 @@ export function CommentsList() {
     setMessage(comment.message);
     setIsCreate(false);
     setEditedComment({ ...comment });
+    document.getElementById('commentInput')?.focus();
   };
 
   const handleEditeBtn = async () => {
@@ -138,6 +149,7 @@ export function CommentsList() {
       <div className="max-w-2xl px-4">
         <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200">
           <textarea
+            id="commentInput"
             className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none"
             placeholder="Write a comment..."
             value={message}
@@ -159,6 +171,7 @@ export function CommentsList() {
           </li>
         ))}
       </ul>
+      <SocketAlert message={socketMessage} receivedAt={socketReceivedAt} />
     </section>
   );
 }

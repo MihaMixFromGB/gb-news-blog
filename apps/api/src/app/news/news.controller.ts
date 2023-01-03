@@ -2,7 +2,7 @@ import {
   Controller,
   Get,
   Post,
-  Put,
+  Patch,
   Delete,
   Param,
   Body,
@@ -13,7 +13,7 @@ import {
   // UploadedFile,
   // UseInterceptors,
 } from '@nestjs/common';
-// import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiResponse } from '@nestjs/swagger';
 // import { FileInterceptor } from '@nestjs/platform-express';
 // import { diskStorage } from 'multer';
 
@@ -32,30 +32,30 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 // const helperFileLoader = new HelperFileLoader();
 // helperFileLoader.path = PATH_NEWS;
 // const fileValidator = new FileTypeValidator();
-// @ApiTags('api/news')
+@ApiTags('api/news')
 @UseGuards(JwtAuthGuard)
 @Controller('news')
 export class NewsController {
   constructor(private newsService: NewsService) {}
 
   @Get()
-  // @ApiResponse({
-  //   status: 200,
-  //   description: 'The news have been successfully found.',
-  // })
+  @ApiResponse({
+    status: 200,
+    description: 'All news have been successfully found.',
+  })
   async getAll(): Promise<NewsEntity[]> {
     return this.newsService.findAll();
   }
 
   @Get(':id')
-  // @ApiResponse({
-  //   status: 200,
-  //   description: 'The news has been successfully found.',
-  // })
-  // @ApiResponse({
-  //   status: 500,
-  //   description: 'Internal server error. ID maybe is not correct.',
-  // })
+  @ApiResponse({
+    status: 200,
+    description: 'The news has been successfully found.',
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error.',
+  })
   async getById(@Param('id') id: number): Promise<NewsEntity> {
     try {
       return this.newsService.findById(id);
@@ -65,14 +65,14 @@ export class NewsController {
   }
 
   @Post()
-  // @ApiResponse({
-  //   status: 201,
-  //   description: 'The news has been successfully created.',
-  // })
-  // @ApiResponse({
-  //   status: 400,
-  //   description: 'Data validation has been failed.',
-  // })
+  @ApiResponse({
+    status: 201,
+    description: 'The news has been successfully created.',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Dto validation has been failed.',
+  })
   async create(@Body() newsDto: NewsDto): Promise<NewsEntity> {
     return this.newsService.create(newsDto);
   }
@@ -98,15 +98,15 @@ export class NewsController {
   //   return `${file.originalname} has been loaded!`;
   // }
 
-  @Put(':id')
-  // @ApiResponse({
-  //   status: 200,
-  //   description: 'The news has been successfully updated.',
-  // })
-  // @ApiResponse({
-  //   status: 400,
-  //   description: 'Data validation has been failed.',
-  // })
+  @Patch(':id')
+  @ApiResponse({
+    status: 200,
+    description: 'The news has been successfully updated.',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Dto validation has been failed.',
+  })
   // @ApiResponse({
   //   status: 500,
   //   description: 'Internal server error. ID maybe is not correct.',
@@ -119,10 +119,10 @@ export class NewsController {
   }
 
   @Delete(':id')
-  // @ApiResponse({
-  //   status: 200,
-  //   description: 'The news has been successfully removed.',
-  // })
+  @ApiResponse({
+    status: 200,
+    description: 'The news has been successfully removed.',
+  })
   async remove(@Param('id') id: number): Promise<NewsEntity | null> {
     return this.newsService.remove(id);
   }
