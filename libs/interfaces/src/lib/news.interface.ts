@@ -5,6 +5,6 @@ export interface News {
   authorId: number;
   cover?: string;
   categoryId: number;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string;
+  updatedAt?: string;
 }

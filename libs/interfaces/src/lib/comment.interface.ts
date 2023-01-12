@@ -4,6 +4,6 @@ export interface Comment {
   message: string;
   newsId: number;
   userId: number;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string;
+  updatedAt?: string;
 }

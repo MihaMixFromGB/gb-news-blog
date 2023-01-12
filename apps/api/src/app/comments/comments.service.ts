@@ -156,7 +156,9 @@ export class CommentsService {
   }
 
   private compareComments(item1: CommentEntity, item2: CommentEntity) {
-    return item1.createdAt.getTime() - item2.createdAt.getTime();
+    return (
+      new Date(item1.createdAt).getTime() - new Date(item2.createdAt).getTime()
+    );
   }
 
   private async convertTreeToArray(

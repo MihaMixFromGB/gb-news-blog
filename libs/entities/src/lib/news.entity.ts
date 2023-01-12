@@ -33,8 +33,8 @@ export class NewsEntity implements Omit<News, 'authorId' | 'categoryId'> {
   author!: UserInfo;
 
   @CreateDateColumn({ type: 'timestamp' })
-  createdAt!: Date;
+  createdAt!: string;
 
   @UpdateDateColumn({ type: 'timestamp' })
-  updatedAt!: Date;
+  updatedAt!: string;
 }

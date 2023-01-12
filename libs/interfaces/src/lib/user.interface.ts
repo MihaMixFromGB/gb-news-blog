@@ -6,6 +6,6 @@ export interface User {
   password: string;
   role: string;
   avatar?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string;
+  updatedAt?: string;
 }

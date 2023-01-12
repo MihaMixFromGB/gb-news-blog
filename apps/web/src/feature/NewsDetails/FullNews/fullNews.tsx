@@ -39,7 +39,7 @@ export function FullNews() {
         <h2 className="text-gray-900 text-xl font-medium mb-2">{news.title}</h2>
         <p className="text-gray-600 text-xs">Author: {nickname}</p>
         <p className="text-gray-600 text-xs">
-          Created:{<TimeAgo timestamp={news.createdAt.toString()} />}
+          Created:{<TimeAgo timestamp={news.createdAt} />}
         </p>
         <p className="self-start text-gray-700 text-base mb-4">
           {news.description}

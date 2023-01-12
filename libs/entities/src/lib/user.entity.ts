@@ -32,8 +32,8 @@ export class UserEntity implements User {
   avatar?: string;
 
   @CreateDateColumn({ type: 'timestamp' })
-  createdAt!: Date;
+  createdAt!: string;
 
   @UpdateDateColumn({ type: 'timestamp' })
-  updatedAt!: Date;
+  updatedAt!: string;
 }

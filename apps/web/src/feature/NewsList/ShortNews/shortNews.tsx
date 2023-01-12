@@ -40,7 +40,7 @@ export function ShortNews({ news }: ShortInfoProps) {
         </a>
         <p className="text-gray-600 text-xs">Author: {nickname}</p>
         <p className="text-gray-600 text-xs">
-          Created:{<TimeAgo timestamp={news.createdAt.toString()} />}
+          Created:{<TimeAgo timestamp={news.createdAt} />}
         </p>
         <p className=" text-gray-700 text-base mb-4">{shortDecription}</p>
       </div>
